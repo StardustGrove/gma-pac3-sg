@@ -313,25 +313,25 @@ pac.AddHook("Think", "events", function()
 			end
 			ply.pac_physics_died = true
 		elseif ply.pac_death_ragdollize or ply.pac_death_ragdollize == nil then
-
+			-- Disabled to see if it fixes crashes
 			pac.HideEntityParts(ply)
 
-			for _, part in pairs(ent_parts[ply]) do
+			/*for _, part in pairs(ent_parts[ply]) do
 				part:SetOwner(rag)
 			end
 			rag:SetOwner(ply)
-			pac.ShowEntityParts(rag)
+			pac.ShowEntityParts(rag)*/
 
 			ply.pac_revert_ragdoll = function()
 				ply.pac_ragdoll = nil
 
 				if not ent_parts[ply] then return end
 
-				pac.HideEntityParts(rag)
+				/*pac.HideEntityParts(rag)
 
 				for _, part in pairs(ent_parts[ply]) do
 					part:SetOwner(ply)
-				end
+				end*/
 
 				pac.ShowEntityParts(ply)
 			end

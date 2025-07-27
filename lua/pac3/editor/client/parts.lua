@@ -3312,7 +3312,14 @@ function pace.AddQuickSetupsToPartMenu(menu, obj)
 
 		--helper variable to adjust relative to player height
 		local ent = obj:GetRootPart():GetOwner()
-		local default_headbone = ent:LookupBone("ValveBiped.Bip01_Head1")
+		local default_headbone
+
+		if PPM2 and ent:IsPony() then
+			default_headbone = ent:LookupBone("Lrigscull")
+		else
+			default_headbone = ent:LookupBone("ValveBiped.Bip01_Head1")
+		end
+
 		if not default_headbone then
 			for i=0,ent:GetBoneCount(),1 do
 				if string.find(ent:GetBoneName(i), "head") or string.find(ent:GetBoneName(i), "Head") then
