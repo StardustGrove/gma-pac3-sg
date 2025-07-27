@@ -250,6 +250,8 @@ function pac.UnhookEntityRender(ent, part)
 	end
 end
 
+local cvar_enable_outfits_on_ragdolls = CreateClientConVar("pac_enable_outfits_on_ragdolls", "0", true, true)
+
 pac.AddHook("Think", "events", function()
 	for _, ply in player.Iterator() do
 		if not ent_parts[ply] then continue end
@@ -313,25 +315,28 @@ pac.AddHook("Think", "events", function()
 			end
 			ply.pac_physics_died = true
 		elseif ply.pac_death_ragdollize or ply.pac_death_ragdollize == nil then
-			-- Disabled to see if it fixes crashes
 			pac.HideEntityParts(ply)
-
-			/*for _, part in pairs(ent_parts[ply]) do
-				part:SetOwner(rag)
+			
+			if (cvar_enable_outfits_on_ragdolls:GetBool()) then
+				--// Applying outfits to ragdolls causes mysterious crashes, so this is now gated behind a cvar that is disabled by default 
+				for _, part in pairs(ent_parts[ply]) do
+					part:SetOwner(rag)
+				end
+				rag:SetOwner(ply)
+				pac.ShowEntityParts(rag)
 			end
-			rag:SetOwner(ply)
-			pac.ShowEntityParts(rag)*/
-
+			
 			ply.pac_revert_ragdoll = function()
 				ply.pac_ragdoll = nil
 
 				if not ent_parts[ply] then return end
-
-				/*pac.HideEntityParts(rag)
-
-				for _, part in pairs(ent_parts[ply]) do
-					part:SetOwner(ply)
-				end*/
+				
+				if (cvar_enable_outfits_on_ragdolls:GetBool()) then -- optional crash avoidance
+					pac.HideEntityParts(rag)
+					for _, part in pairs(ent_parts[ply]) do
+						part:SetOwner(ply)
+					end
+				end
 
 				pac.ShowEntityParts(ply)
 			end
