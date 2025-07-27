@@ -140,6 +140,11 @@ function pace.ClientSettingsMenu(self)
 		self:NumSlider(L"Shake max amplitude: ", "pac_limit_shake_amplitude", 0, 1000, 0)
 		self:NumSlider(L"Particles max per emission: ", "pac_limit_particles_per_emission", 0, 5000, 0)
 		self:NumSlider(L"Particles max per emitter: ", "pac_limit_particles_per_emitter", 0, 10000, 0)
+
+	self:Help(L"Others"):SetFont("DermaDefaultBold")
+		self:CheckBox(L"Reveal outfits only on +use", "pac_onuse_only")
+		self:CheckBox(L"Hide outfits that some folks can find disturbing", "pac_hide_disturbing")
+		self:Button(L"Open PAC settings window", "pace_settings")
 end
 
 local default = "0"
@@ -191,7 +196,7 @@ function pace.AdminSettingsMenu(self)
 		self:CheckBox(L"Only specifically allowed users can do pac3 combat actions", "pac_sv_combat_whitelisting")
 	self:Help(""):SetFont("DermaDefaultBold")--spacers
 	self:Help(""):SetFont("DermaDefaultBold")
-		
+
 	self:Help(L"Combat parts (more detailed settings in the full editor settings menu)"):SetFont("DermaDefaultBold")
 		self:Help(L"Damage Zones"):SetFont("DermaDefaultBold")
 		self:CheckBox(L"Enable damage zones", "pac_sv_damage_zone")
@@ -200,7 +205,7 @@ function pace.AdminSettingsMenu(self)
 		self:NumSlider(L"Max length", "pac_sv_damage_zone_max_length", 0, 32767, 0)
 		self:CheckBox(L"Enable damage zone dissolve", "pac_sv_damage_zone_allow_dissolve")
 		self:CheckBox(L"Enable ragdoll hitparts", "pac_sv_damage_zone_allow_ragdoll_hitparts")
-		
+
 		self:Help(L"Hitscan"):SetFont("DermaDefaultBold")
 		self:CheckBox(L"Enable hitscan part", "pac_sv_hitscan")
 		self:NumSlider(L"Max damage", "pac_sv_hitscan_max_damage", 0, 268435455, 0)
@@ -211,13 +216,13 @@ function pace.AdminSettingsMenu(self)
 		self:CheckBox(L"Allow grab", "pac_sv_lock_grab")
 		self:CheckBox(L"Allow teleport", "pac_sv_lock_teleport")
 		self:CheckBox(L"Allow aiming", "pac_sv_lock_aim")
-		
+
 		self:Help(L"Force part"):SetFont("DermaDefaultBold")
 		self:CheckBox(L"Enable force part", "pac_sv_force")
 		self:NumSlider(L"Max amount", "pac_sv_force_max_amount", 0, 10000000, 0)
 		self:NumSlider(L"Max radius", "pac_sv_force_max_radius", 0, 32767, 0)
 		self:NumSlider(L"Max length", "pac_sv_force_max_length", 0, 32767, 0)
-		
+
 		self:Help(L"Health Modifier"):SetFont("DermaDefaultBold")
 		self:CheckBox(L"Enable health modifier", "pac_sv_health_modifier")
 		self:CheckBox(L"Allow changing max health or armor", "pac_sv_health_modifier_allow_maxhp")
@@ -238,40 +243,11 @@ function pace.AdminSettingsMenu(self)
 		self:CheckBox(L"Allow playermovement", "pac_free_movement")
 		self:CheckBox(L"Allow playermovement mass", "pac_player_movement_allow_mass")
 		self:CheckBox(L"Allow physics damage scaling by mass", "pac_player_movement_physics_damage_scaling")
-		
 end
 
-
-
-local icon_cvar = CreateConVar("pac_icon", "0", {FCVAR_ARCHIVE}, "Use the new PAC4.5 icon or the old PAC icon.\n0 = use the old one\n1 = use the new one")
-local icon = icon_cvar:GetBool() and "icon64/new pac icon.png" or "icon64/pac3.png"
+local icon = "icon64/pac3.png"
 
 icon = file.Exists("materials/"..icon,'GAME') and icon or "icon64/playermodel.png"
-
-local function ResetPACIcon()
-	if icon_cvar:GetBool() then icon = "icon64/new pac icon.png" else icon = "icon64/pac3.png" end
-	list.Set(
-		"DesktopWindows",
-		"PACEditor",
-		{
-			title = "PAC Editor",
-			icon = icon,
-			width = 960,
-			height = 700,
-			onewindow = true,
-			init = function(icn, pnl)
-				pnl:Remove()
-				RunConsoleCommand("pac_editor")
-			end
-		}
-	)
-	RunConsoleCommand("spawnmenu_reload")
-end
-
-cvars.AddChangeCallback("pac_icon", ResetPACIcon)
-
-concommand.Add("pac_change_icon", function() RunConsoleCommand("pac_icon", (not icon_cvar:GetBool()) and "1" or "0") ResetPACIcon() end)
-
 
 list.Set(
 	"DesktopWindows",

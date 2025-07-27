@@ -359,7 +359,6 @@ local function populate_options(menu)
 	menu:AddCVar(L"enable language identifier in text fields", "pac_editor_languageid", "1", "0")
 	pace.AddLanguagesToMenu(menu)
 	pace.AddFontsToMenu(menu)
-	menu:AddCVar(L"Use the new PAC4.5 icon", "pac_icon", "1", "0")
 	if cookie.GetNumber("pac3_new_features_review") == 0 then
 		menu:AddOption("re-show new features review", function() cookie.Set("pac3_new_features_review", 1) pace.CloseEditor() pace.OpenEditor() pace.RefreshTree() end):SetIcon("icon16/medal_gold_1.png")
 	end

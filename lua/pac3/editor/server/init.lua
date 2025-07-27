@@ -1,7 +1,7 @@
 pace = pace or {}
 
 -- for the default models
-resource.AddWorkshop("104691717")
+-- resource.AddWorkshop("104691717")
 
 pace.luadata = include("pac3/libraries/luadata.lua")
 pace.Parts = pace.Parts or {}
@@ -106,5 +106,4 @@ end
 
 CreateConVar("has_pac3_editor", "1", {FCVAR_NOTIFY})
 
-resource.AddSingleFile("materials/icon64/new pac icon.png")
 resource.AddSingleFile("materials/icon64/pac3.png")

@@ -1,3 +1,5 @@
+local pac_undo_limit = CreateClientConVar("pac_undo_limit", "30", true, false, "(Default: 30) Limits the amount of undo steps while in PAC editor. A higher value can result in more memory usage and potentially a crash.", 1)
+
 function pace.ClearUndo()
 	pace.UndoPosition = 1
 	pace.UndoHistory = {}
@@ -99,6 +101,10 @@ function pace.RecordUndoHistory()
 
 	for i = pace.UndoPosition + 1, #pace.UndoHistory do
 		table.remove(pace.UndoHistory)
+	end
+
+	if #pace.UndoHistory >= pac_undo_limit:GetInt() then
+		table.remove(pace.UndoHistory, 1)
 	end
 
 	table.insert(pace.UndoHistory, data)
